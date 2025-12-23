@@ -1,5 +1,6 @@
 import { Component, ViewChild, effect, AfterViewInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { GameService } from './services/game.service';
 import { MapComponent } from './components/map/map.component';
@@ -10,6 +11,7 @@ import { Difficulty } from './models/city.model';
 @Component({
   selector: 'app-root',
   imports: [
+    CommonModule,
     RouterOutlet,
     MapComponent,
     ControlsComponent,
@@ -22,6 +24,8 @@ import { Difficulty } from './models/city.model';
 export class App implements AfterViewInit {
   @ViewChild(ControlsComponent) controlsComponent?: ControlsComponent;
   @ViewChild(GameComponent) gameComponent?: GameComponent;
+
+  uiHidden = false;
 
   constructor(
     public gameService: GameService,
@@ -102,5 +106,17 @@ export class App implements AfterViewInit {
 
   getCurrentLanguage(): string {
     return this.translate.currentLang || 'da';
+  }
+
+  toggleUI(): void {
+    this.uiHidden = !this.uiHidden;
+  }
+
+  playAgain(): void {
+    this.gameService.beginPlaying();
+  }
+
+  changeSettings(): void {
+    this.gameService.screenState.set('settings');
   }
 }

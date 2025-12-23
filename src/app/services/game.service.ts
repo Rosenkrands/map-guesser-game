@@ -16,6 +16,7 @@ export class GameService {
   private readonly HIGH_SCORE_PREFIX = 'map-guesser-high-score';
 
   // Signals for reactive state
+  screenState = signal<'start' | 'settings' | 'playing' | 'finished'>('start');
   currentCity = signal<City | null>(null);
   minPopulation = signal<number>(this.loadMinPopulation());
   difficulty = signal<Difficulty>('easy');
@@ -23,6 +24,8 @@ export class GameService {
   highScore = signal<number>(0);
   gameState = signal<'playing' | 'correct' | 'wrong' | 'completed'>('playing');
   lastGuess = signal<string>('');
+  finalScore = signal<number>(0);
+  isNewHighScore = signal<boolean>(false);
 
   private usedCities: Set<string> = new Set();
 
@@ -53,7 +56,6 @@ export class GameService {
 
   constructor() {
     this.loadHighScore();
-    this.startNewRound();
   }
 
   private loadMinPopulation(): number {
@@ -180,5 +182,39 @@ export class GameService {
     this.usedCities.clear();
     this.streak.set(0);
     this.startNewRound();
+  }
+
+  // Screen flow methods
+  startGame(): void {
+    this.screenState.set('settings');
+  }
+
+  beginPlaying(): void {
+    this.screenState.set('playing');
+    this.usedCities.clear();
+    this.streak.set(0);
+    this.loadHighScore();
+    this.startNewRound();
+  }
+
+  endGame(): void {
+    const currentStreak = this.streak();
+    const currentHighScore = this.highScore();
+    this.finalScore.set(currentStreak);
+    this.isNewHighScore.set(currentStreak > currentHighScore);
+    
+    if (currentStreak > currentHighScore) {
+      this.saveHighScore(currentStreak);
+    }
+    
+    this.screenState.set('finished');
+  }
+
+  returnToStart(): void {
+    this.screenState.set('start');
+    this.currentCity.set(null);
+    this.streak.set(0);
+    this.gameState.set('playing');
+    this.usedCities.clear();
   }
 }
