@@ -125,15 +125,3 @@ Open:
 - Shareable streak links
 
 ---
-
-## 📜 License
-
-MIT
-
----
-
-## 🙌 Credits
-
-- OpenStreetMap contributors
-- OpenMapTiles
-- Statistics Denmark

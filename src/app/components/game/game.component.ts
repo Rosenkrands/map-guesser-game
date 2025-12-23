@@ -1,0 +1,244 @@
+import { Component, output, input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-game',
+  standalone: true,
+  imports: [FormsModule],
+  template: `
+    <div class="game-panel">
+      <div class="streak">
+        <h2>Current Streak: {{ streak }}@if (streak >= 2) { 🔥 }</h2>
+        @if (highScore > 0) {
+        <p class="high-score">High Score: {{ highScore }}</p>
+        }
+      </div>
+
+      <div class="guess-form">
+        <input
+          type="text"
+          [(ngModel)]="guess"
+          list="city-suggestions"
+          placeholder="Enter city name..."
+          (keyup.enter)="onSubmit()"
+          [disabled]="gameState !== 'playing'"
+          autocomplete="off"
+        />
+        <datalist id="city-suggestions">
+          @for (city of availableCities(); track city) {
+          <option [value]="city"></option>
+          }
+        </datalist>
+        <button
+          (click)="onSubmit()"
+          [disabled]="!guess || gameState !== 'playing'"
+        >
+          Submit Guess
+        </button>
+      </div>
+
+      @if (gameState === 'correct') {
+      <div class="feedback correct">
+        <h3>✓ Correct!</h3>
+        <p>You guessed {{ lastGuess }} correctly!</p>
+        <button (click)="onNextCity()">Next City →</button>
+      </div>
+      } @if (gameState === 'wrong') {
+      <div class="feedback wrong">
+        <h3>✗ Wrong!</h3>
+        <p>
+          Your guess: <strong>{{ lastGuess }}</strong>
+        </p>
+        <p>
+          Correct answer: <strong>{{ correctAnswer }}</strong>
+        </p>
+        <p>Streak reset to 0</p>
+        <button (click)="onNextCity()">Try Another City →</button>
+      </div>
+      } @if (gameState === 'completed') {
+      <div class="feedback celebration">
+        <h3>🎉 Congratulations! 🎉</h3>
+        <p>You've guessed all {{ streak }} cities correctly!</p>
+        <p class="perfect-score">Perfect Score!</p>
+        <button (click)="onRestart()">Play Again →</button>
+      </div>
+      }
+    </div>
+  `,
+  styles: [
+    `
+      .game-panel {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .streak {
+        text-align: center;
+        margin-bottom: 1.5rem;
+
+        h2 {
+          margin: 0;
+          font-size: 1.5rem;
+          color: #333;
+        }
+
+        .high-score {
+          margin: 0.5rem 0 0 0;
+          font-size: 1rem;
+          color: #666;
+          font-weight: 600;
+        }
+      }
+
+      .guess-form {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+
+        input {
+          flex: 1;
+          padding: 0.75rem;
+          border: 2px solid #ccc;
+          border-radius: 4px;
+          font-size: 1rem;
+
+          &:focus {
+            outline: none;
+            border-color: #007bff;
+          }
+
+          &:disabled {
+            background: #f5f5f5;
+          }
+        }
+
+        button {
+          padding: 0.75rem 1.5rem;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover:not(:disabled) {
+            background: #0056b3;
+          }
+
+          &:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      .feedback {
+        padding: 1rem;
+        border-radius: 4px;
+        text-align: center;
+
+        h3 {
+          margin: 0 0 0.5rem 0;
+          font-size: 1.5rem;
+        }
+
+        p {
+          margin: 0.5rem 0;
+        }
+
+        button {
+          margin-top: 1rem;
+          padding: 0.75rem 1.5rem;
+          background: #28a745;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover {
+            background: #218838;
+          }
+        }
+      }
+
+      .correct {
+        background: #d4edda;
+        border: 2px solid #28a745;
+        color: #155724;
+      }
+
+      .wrong {
+        background: #f8d7da;
+        border: 2px solid #dc3545;
+        color: #721c24;
+      }
+
+      .celebration {
+        background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        border: 3px solid #ffc107;
+        color: #fff;
+
+        h3 {
+          font-size: 2rem;
+        }
+
+        .perfect-score {
+          font-size: 1.2rem;
+          font-weight: bold;
+          margin: 1rem 0;
+        }
+      }
+    `,
+  ],
+})
+export class GameComponent {
+  availableCities = input.required<string[]>();
+
+  guess = '';
+  streak = 0;
+  highScore = 0;
+  gameState: 'playing' | 'correct' | 'wrong' | 'completed' = 'playing';
+  lastGuess = '';
+  correctAnswer = '';
+
+  guessSubmitted = output<string>();
+  nextCityRequested = output<void>();
+  restartRequested = output<void>();
+
+  onSubmit(): void {
+    if (this.guess.trim()) {
+      this.guessSubmitted.emit(this.guess.trim());
+    }
+  }
+
+  onNextCity(): void {
+    this.guess = '';
+    this.nextCityRequested.emit();
+  }
+
+  onRestart(): void {
+    this.guess = '';
+    this.restartRequested.emit();
+  }
+
+  updateGameState(
+    state: 'playing' | 'correct' | 'wrong' | 'completed',
+    streak: number,
+    lastGuess: string,
+    correctAnswer: string,
+    highScore: number
+  ): void {
+    this.gameState = state;
+    this.streak = streak;
+    this.lastGuess = lastGuess;
+    this.correctAnswer = correctAnswer;
+    this.highScore = highScore;
+  }
+}
