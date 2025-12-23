@@ -1,16 +1,22 @@
 import { Component, output, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TranslateModule],
   template: `
     <div class="game-panel">
       <div class="streak">
-        <h2>Current Streak: {{ streak }}@if (streak >= 2) { 🔥 }</h2>
+        <h2>
+          {{ 'GAME.CURRENT_STREAK' | translate }}: {{ streak }}@if (streak >= 2)
+          { 🔥 }
+        </h2>
         @if (highScore > 0) {
-        <p class="high-score">High Score: {{ highScore }}</p>
+        <p class="high-score">
+          {{ 'GAME.HIGH_SCORE' | translate }}: {{ highScore }}
+        </p>
         }
       </div>
 
@@ -19,7 +25,7 @@ import { FormsModule } from '@angular/forms';
           type="text"
           [(ngModel)]="guess"
           list="city-suggestions"
-          placeholder="Enter city name..."
+          [placeholder]="'GAME.ENTER_CITY' | translate"
           (keyup.enter)="onSubmit()"
           [disabled]="gameState !== 'playing'"
           autocomplete="off"
@@ -33,34 +39,41 @@ import { FormsModule } from '@angular/forms';
           (click)="onSubmit()"
           [disabled]="!guess || gameState !== 'playing'"
         >
-          Submit Guess
+          {{ 'GAME.SUBMIT_GUESS' | translate }}
         </button>
       </div>
 
       @if (gameState === 'correct') {
       <div class="feedback correct">
-        <h3>✓ Correct!</h3>
-        <p>You guessed {{ lastGuess }} correctly!</p>
-        <button (click)="onNextCity()">Next City →</button>
+        <h3>✓ {{ 'GAME.CORRECT' | translate }}</h3>
+        <p>{{ 'GAME.CORRECT_MESSAGE' | translate : { city: lastGuess } }}</p>
+        <button (click)="onNextCity()">
+          {{ 'GAME.NEXT_CITY' | translate }}
+        </button>
       </div>
       } @if (gameState === 'wrong') {
       <div class="feedback wrong">
-        <h3>✗ Wrong!</h3>
+        <h3>✗ {{ 'GAME.WRONG' | translate }}</h3>
         <p>
-          Your guess: <strong>{{ lastGuess }}</strong>
+          {{ 'GAME.YOUR_GUESS' | translate }}: <strong>{{ lastGuess }}</strong>
         </p>
         <p>
-          Correct answer: <strong>{{ correctAnswer }}</strong>
+          {{ 'GAME.CORRECT_ANSWER' | translate }}:
+          <strong>{{ correctAnswer }}</strong>
         </p>
-        <p>Streak reset to 0</p>
-        <button (click)="onNextCity()">Try Another City →</button>
+        <p>{{ 'GAME.STREAK_RESET' | translate }}</p>
+        <button (click)="onNextCity()">
+          {{ 'GAME.TRY_ANOTHER' | translate }}
+        </button>
       </div>
       } @if (gameState === 'completed') {
       <div class="feedback celebration">
-        <h3>🎉 Congratulations! 🎉</h3>
-        <p>You've guessed all {{ streak }} cities correctly!</p>
-        <p class="perfect-score">Perfect Score!</p>
-        <button (click)="onRestart()">Play Again →</button>
+        <h3>{{ 'GAME.CONGRATULATIONS' | translate }}</h3>
+        <p>{{ 'GAME.ALL_GUESSED' | translate : { count: streak } }}</p>
+        <p class="perfect-score">{{ 'GAME.PERFECT_SCORE' | translate }}</p>
+        <button (click)="onRestart()">
+          {{ 'GAME.PLAY_AGAIN' | translate }}
+        </button>
       </div>
       }
     </div>

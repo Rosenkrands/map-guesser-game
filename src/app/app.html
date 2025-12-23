@@ -1,7 +1,21 @@
 <div class="container">
   <header>
-    <h1>🇩🇰 Danish City Map Guesser</h1>
-    <p>Identify Danish cities using only roads and water</p>
+    <div class="header-content">
+      <div>
+        <h1>{{ 'APP.TITLE' | translate }}</h1>
+        <p>{{ 'APP.SUBTITLE' | translate }}</p>
+      </div>
+      <div class="language-switcher">
+        <select
+          [value]="getCurrentLanguage()"
+          (change)="onLanguageChange($event)"
+          class="language-select"
+        >
+          <option value="en">English</option>
+          <option value="da">Dansk</option>
+        </select>
+      </div>
+    </div>
   </header>
 
   <main>
@@ -23,10 +37,7 @@
   </main>
 
   <footer>
-    <p>
-      Built with Angular & MapLibre GL | Data: OpenStreetMap & Statistics
-      Denmark
-    </p>
+    <p>{{ 'APP.FOOTER' | translate }}</p>
   </footer>
 </div>
 

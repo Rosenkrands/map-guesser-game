@@ -1,17 +1,18 @@
-import { Component, output, input, effect, computed } from '@angular/core';
+import { Component, output, input, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { Difficulty } from '../../models/city.model';
 
 @Component({
   selector: 'app-controls',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TranslateModule],
   template: `
     <div class="controls">
       <div class="control-group">
-        <label for="population"
-          >Minimum Population: {{ minPopulation() }}</label
-        >
+        <label for="population">
+          {{ 'CONTROLS.MIN_POPULATION' | translate }}: {{ minPopulation() }}
+        </label>
         <input
           type="range"
           id="population"
@@ -21,20 +22,31 @@ import { Difficulty } from '../../models/city.model';
           step="5000"
           (input)="onPopulationChange($event)"
         />
-        <small>Cities available: {{ citiesCount() }}</small>
+        <small
+          >{{ 'CONTROLS.CITIES_AVAILABLE' | translate }}:
+          {{ citiesCount() }}</small
+        >
       </div>
 
       <div class="control-group">
-        <label for="difficulty">Difficulty:</label>
+        <label for="difficulty">{{ 'CONTROLS.DIFFICULTY' | translate }}:</label>
         <select
           id="difficulty"
           [value]="difficulty"
           (change)="onDifficultyChange($event)"
         >
-          <option value="easy">Easy (All roads + water)</option>
-          <option value="medium">Medium (Major roads + water)</option>
-          <option value="hard">Hard (Primary roads + water)</option>
-          <option value="extreme">Extreme (Water only)</option>
+          <option value="easy">
+            {{ 'CONTROLS.DIFFICULTY_EASY' | translate }}
+          </option>
+          <option value="medium">
+            {{ 'CONTROLS.DIFFICULTY_MEDIUM' | translate }}
+          </option>
+          <option value="hard">
+            {{ 'CONTROLS.DIFFICULTY_HARD' | translate }}
+          </option>
+          <option value="extreme">
+            {{ 'CONTROLS.DIFFICULTY_EXTREME' | translate }}
+          </option>
         </select>
       </div>
     </div>

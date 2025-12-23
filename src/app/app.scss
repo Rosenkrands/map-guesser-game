@@ -2,13 +2,26 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+  font-family: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
 }
 
 header {
   text-align: center;
   margin-bottom: 2rem;
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    > div:first-child {
+      flex: 1;
+      text-align: center;
+    }
+  }
 
   h1 {
     margin: 0 0 0.5rem 0;
@@ -20,6 +33,30 @@ header {
     margin: 0;
     font-size: 1.1rem;
     color: #666;
+  }
+
+  .language-switcher {
+    .language-select {
+      padding: 0.5rem 1rem;
+      border: 2px solid #007bff;
+      background: white;
+      color: #007bff;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background: #f0f8ff;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #0056b3;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+      }
+    }
   }
 }
 

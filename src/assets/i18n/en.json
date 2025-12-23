@@ -1,0 +1,39 @@
+{
+  "APP": {
+    "TITLE": "Guess a City",
+    "SUBTITLE": "Identify Danish cities using only roads and water",
+    "FOOTER": "Built with Angular & MapLibre GL | Data: OpenStreetMap & Statistics Denmark"
+  },
+  "CONTROLS": {
+    "MIN_POPULATION": "Minimum Population",
+    "CITIES_AVAILABLE": "Cities available",
+    "DIFFICULTY": "Difficulty",
+    "DIFFICULTY_EASY": "Easy (All roads + water)",
+    "DIFFICULTY_MEDIUM": "Medium (Major roads + water)",
+    "DIFFICULTY_HARD": "Hard (Primary roads + water)",
+    "DIFFICULTY_EXTREME": "Extreme (Water only)"
+  },
+  "GAME": {
+    "CURRENT_STREAK": "Current Streak",
+    "HIGH_SCORE": "High Score",
+    "ENTER_CITY": "Enter city name...",
+    "SUBMIT_GUESS": "Submit Guess",
+    "CORRECT": "Correct!",
+    "CORRECT_MESSAGE": "You guessed {{city}} correctly!",
+    "WRONG": "Wrong!",
+    "YOUR_GUESS": "Your guess",
+    "CORRECT_ANSWER": "Correct answer",
+    "STREAK_RESET": "Streak reset to 0",
+    "NEXT_CITY": "Next City →",
+    "TRY_ANOTHER": "Try Another City →",
+    "CONGRATULATIONS": "🎉 Congratulations! 🎉",
+    "ALL_GUESSED": "You've guessed all {{count}} cities correctly!",
+    "PERFECT_SCORE": "Perfect Score!",
+    "PLAY_AGAIN": "Play Again →"
+  },
+  "LANGUAGE": {
+    "SWITCH": "Language",
+    "ENGLISH": "English",
+    "DANISH": "Dansk"
+  }
+}

@@ -1,5 +1,6 @@
 import { Component, ViewChild, effect, AfterViewInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { GameService } from './services/game.service';
 import { MapComponent } from './components/map/map.component';
 import { ControlsComponent } from './components/controls/controls.component';
@@ -8,7 +9,13 @@ import { Difficulty } from './models/city.model';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MapComponent, ControlsComponent, GameComponent],
+  imports: [
+    RouterOutlet,
+    MapComponent,
+    ControlsComponent,
+    GameComponent,
+    TranslateModule,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -16,7 +23,15 @@ export class App implements AfterViewInit {
   @ViewChild(ControlsComponent) controlsComponent?: ControlsComponent;
   @ViewChild(GameComponent) gameComponent?: GameComponent;
 
-  constructor(public gameService: GameService) {
+  constructor(
+    public gameService: GameService,
+    private translate: TranslateService
+  ) {
+    // Set up translations
+    const savedLang = localStorage.getItem('map-guesser-language') || 'da';
+    translate.setFallbackLang('da');
+    translate.use(savedLang);
+
     // Update components when game state changes
     effect(() => {
       const state = this.gameService.gameState();
@@ -73,5 +88,19 @@ export class App implements AfterViewInit {
 
   onRestartRequested(): void {
     this.gameService.restartAfterCompletion();
+  }
+
+  switchLanguage(lang: string): void {
+    this.translate.use(lang);
+    localStorage.setItem('map-guesser-language', lang);
+  }
+
+  onLanguageChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.switchLanguage(select.value);
+  }
+
+  getCurrentLanguage(): string {
+    return this.translate.currentLang || 'da';
   }
 }
