@@ -62,9 +62,6 @@ import { TranslateModule } from '@ngx-translate/core';
           <strong>{{ correctAnswer }}</strong>
         </p>
         <p>{{ 'GAME.STREAK_RESET' | translate }}</p>
-        <button (click)="onNextCity()">
-          {{ 'GAME.TRY_ANOTHER' | translate }}
-        </button>
       </div>
       } @if (gameState === 'completed') {
       <div class="feedback celebration">

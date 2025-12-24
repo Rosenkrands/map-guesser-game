@@ -152,9 +152,9 @@ export class GameService {
       }
       this.gameState.set('correct');
     } else {
-      this.streak.set(0);
-      this.usedCities.clear();
+      // Wrong answer ends the game immediately
       this.gameState.set('wrong');
+      this.endGame();
     }
 
     this.lastGuess.set(guess);
@@ -202,11 +202,11 @@ export class GameService {
     const currentHighScore = this.highScore();
     this.finalScore.set(currentStreak);
     this.isNewHighScore.set(currentStreak > currentHighScore);
-    
+
     if (currentStreak > currentHighScore) {
       this.saveHighScore(currentStreak);
     }
-    
+
     this.screenState.set('finished');
   }
 
