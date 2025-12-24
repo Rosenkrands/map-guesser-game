@@ -155,9 +155,9 @@ export class GameService {
       }
       this.gameState.set('correct');
     } else {
-      // Wrong answer ends the game immediately
+      // Wrong answer: set state to 'wrong' and let the App component
+      // show feedback briefly before ending the game.
       this.gameState.set('wrong');
-      this.endGame();
     }
 
     this.lastGuess.set(guess);

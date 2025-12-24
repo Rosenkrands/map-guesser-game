@@ -142,15 +142,21 @@
     </div>
 
     <div class="results-actions">
-      <button class="btn btn-primary" (click)="playAgain()">
-        {{ 'RESULTS.PLAY_AGAIN' | translate }}
-      </button>
-      <button class="btn btn-secondary" (click)="changeSettings()">
-        {{ 'RESULTS.CHANGE_SETTINGS' | translate }}
-      </button>
-      <button class="btn btn-secondary" (click)="gameService.returnToStart()">
-        {{ 'RESULTS.MAIN_MENU' | translate }}
-      </button>
+      <ng-container
+        *ngIf="gameService.gameState() !== 'completed'; else perfectActions"
+      >
+        <button class="btn btn-primary" (click)="playAgain()">
+          {{ 'RESULTS.PLAY_AGAIN' | translate }}
+        </button>
+        <button class="btn btn-secondary" (click)="gameService.returnToStart()">
+          {{ 'RESULTS.MAIN_MENU' | translate }}
+        </button>
+      </ng-container>
+      <ng-template #perfectActions>
+        <button class="btn btn-secondary" (click)="gameService.returnToStart()">
+          {{ 'RESULTS.MAIN_MENU' | translate }}
+        </button>
+      </ng-template>
     </div>
   </div>
 </div>
