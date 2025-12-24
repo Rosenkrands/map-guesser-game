@@ -43,7 +43,7 @@
     "STREAK_RESET": "Streak reset to 0",
     "NEXT_CITY": "Next City →",
     "TRY_ANOTHER": "Try Another City →",
-    "CONGRATULATIONS": "🎉 Congratulations! 🎉",
+    "CONGRATULATIONS": "Congratulations! 🎉",
     "ALL_GUESSED": "You've guessed all {{count}} cities correctly!",
     "PERFECT_SCORE": "Perfect Score!",
     "PLAY_AGAIN": "Play Again →",
@@ -51,7 +51,7 @@
     "TOGGLE_UI": "Toggle UI"
   },
   "RESULTS": {
-    "PERFECT_TITLE": "🎉 Perfect Game! 🎉",
+    "PERFECT_TITLE": "Perfect Game! 🎉",
     "PERFECT_MESSAGE": "You guessed all {{count}} cities correctly!",
     "NEW_HIGH_SCORE_TITLE": "🏆 New High Score! 🏆",
     "NEW_HIGH_SCORE_MESSAGE": "You achieved a streak of {{score}} cities!",

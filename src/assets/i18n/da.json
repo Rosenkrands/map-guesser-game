@@ -43,7 +43,7 @@
     "STREAK_RESET": "Streak nulstillet til 0",
     "NEXT_CITY": "Næste by →",
     "TRY_ANOTHER": "Prøv en anden by →",
-    "CONGRATULATIONS": "🎉 Tillykke! 🎉",
+    "CONGRATULATIONS": "Tillykke! 🎉",
     "ALL_GUESSED": "Du har gættet alle {{count}} byer korrekt!",
     "PERFECT_SCORE": "Perfekt score!",
     "PLAY_AGAIN": "Spil igen →",
@@ -51,7 +51,7 @@
     "TOGGLE_UI": "Vis kort"
   },
   "RESULTS": {
-    "PERFECT_TITLE": "🎉 Perfekt spil! 🎉",
+    "PERFECT_TITLE": "Perfekt spil! 🎉",
     "PERFECT_MESSAGE": "Du gættede alle {{count}} byer korrekt!",
     "NEW_HIGH_SCORE_TITLE": "🏆 Ny højeste score! 🏆",
     "NEW_HIGH_SCORE_MESSAGE": "Du opnåede en streak på {{score}} byer!",

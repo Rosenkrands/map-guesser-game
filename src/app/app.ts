@@ -62,6 +62,14 @@ export class App implements AfterViewInit {
         );
       }
     });
+
+    // Ensure UI is hidden initially when entering playing screen
+    effect(() => {
+      const screen = this.gameService.screenState();
+      if (screen === 'playing') {
+        this.uiHidden = true;
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -96,6 +104,8 @@ export class App implements AfterViewInit {
 
   onNextCityRequested(): void {
     this.gameService.startNewRound();
+    // Ensure the map is visible when the next city loads
+    this.uiHidden = true;
   }
 
   onRestartRequested(): void {
