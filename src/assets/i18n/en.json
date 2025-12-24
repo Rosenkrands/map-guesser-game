@@ -5,7 +5,6 @@
     "FOOTER": "Built with Angular & MapLibre GL | Data: OpenStreetMap & Statistics Denmark"
   },
   "START": {
-    "WELCOME": "Welcome to Danish City Guesser!",
     "DESCRIPTION": "Test your knowledge of Danish cities by identifying them from their road networks and waterways.",
     "START_BUTTON": "Start Game",
     "HOW_TO_PLAY": "How to Play",

@@ -44,6 +44,14 @@ export class App implements AfterViewInit {
       const correctAnswer = this.gameService.currentCity()?.name || '';
       const highScore = this.gameService.highScore();
 
+      // When all cities have been guessed, go straight to results
+      if (
+        state === 'completed' &&
+        this.gameService.screenState() !== 'finished'
+      ) {
+        this.gameService.endGame();
+      }
+
       if (this.gameComponent) {
         this.gameComponent.updateGameState(
           state,

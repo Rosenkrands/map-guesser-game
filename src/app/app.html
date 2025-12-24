@@ -14,7 +14,6 @@
 <div class="screen start-screen" *ngIf="gameService.screenState() === 'start'">
   <div class="start-content">
     <h1 class="game-title">{{ 'APP.TITLE' | translate }}</h1>
-    <p class="game-subtitle">{{ 'START.WELCOME' | translate }}</p>
     <p class="game-description">{{ 'START.DESCRIPTION' | translate }}</p>
 
     <button class="btn btn-primary btn-large" (click)="gameService.startGame()">

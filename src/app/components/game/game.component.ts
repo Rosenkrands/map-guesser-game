@@ -1,4 +1,4 @@
-import { Component, output, input } from '@angular/core';
+import { Component, output, input, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -71,9 +71,6 @@ import { TranslateModule } from '@ngx-translate/core';
         <h3>{{ 'GAME.CONGRATULATIONS' | translate }}</h3>
         <p>{{ 'GAME.ALL_GUESSED' | translate : { count: streak } }}</p>
         <p class="perfect-score">{{ 'GAME.PERFECT_SCORE' | translate }}</p>
-        <button (click)="onRestart()">
-          {{ 'GAME.PLAY_AGAIN' | translate }}
-        </button>
       </div>
       }
     </div>
@@ -146,6 +143,17 @@ import { TranslateModule } from '@ngx-translate/core';
             background: #ccc;
             cursor: not-allowed;
           }
+        }
+      }
+
+      /* Mobile: stack input and submit button vertically */
+      @media (max-width: 600px) {
+        .guess-form {
+          flex-direction: column;
+        }
+
+        .guess-form button {
+          width: 100%;
         }
       }
 
@@ -253,5 +261,13 @@ export class GameComponent {
     this.lastGuess = lastGuess;
     this.correctAnswer = correctAnswer;
     this.highScore = highScore;
+  }
+
+  @HostListener('document:keydown.enter', ['$event'])
+  handleEnterKey(event: Event): void {
+    if (this.gameState === 'correct' || this.gameState === 'wrong') {
+      event.preventDefault();
+      this.onNextCity();
+    }
   }
 }

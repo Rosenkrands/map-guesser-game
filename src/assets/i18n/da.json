@@ -1,11 +1,10 @@
 {
   "APP": {
-    "TITLE": "Gæt en by",
+    "TITLE": "Gæt en by!",
     "SUBTITLE": "Identificer danske byer ved kun at bruge veje og vand",
     "FOOTER": "Bygget med Angular & MapLibre GL | Data: OpenStreetMap & Danmarks Statistik"
   },
   "START": {
-    "WELCOME": "Velkommen til Dansk By Gætter!",
     "DESCRIPTION": "Test din viden om danske byer ved at identificere dem ud fra deres vejnet og vandveje.",
     "START_BUTTON": "Start spil",
     "HOW_TO_PLAY": "Sådan spiller du",
