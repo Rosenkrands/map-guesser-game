@@ -12,13 +12,13 @@ import extremeStyle from '../../assets/styles/extreme.json';
 })
 export class GameService {
   private readonly cities: City[] = citiesData as City[];
-  private readonly STORAGE_KEY = 'map-guesser-min-population';
+  private readonly STORAGE_KEY = 'map-guesser-cities-count';
   private readonly HIGH_SCORE_PREFIX = 'map-guesser-high-score';
 
   // Signals for reactive state
   screenState = signal<'start' | 'settings' | 'playing' | 'finished'>('start');
   currentCity = signal<City | null>(null);
-  minPopulation = signal<number>(this.loadMinPopulation());
+  citiesToInclude = signal<number>(this.loadCitiesCount());
   difficulty = signal<Difficulty>('easy');
   streak = signal<number>(0);
   highScore = signal<number>(0);
@@ -54,23 +54,30 @@ export class GameService {
     return style;
   });
 
+  private sortedCities: City[] = [];
+
   constructor() {
+    // Prepare sorted list of cities by population (desc)
+    this.sortedCities = [...this.cities].sort(
+      (a, b) => b.population - a.population
+    );
     this.loadHighScore();
   }
 
-  private loadMinPopulation(): number {
+  private loadCitiesCount(): number {
     const stored = localStorage.getItem(this.STORAGE_KEY);
-    return stored ? Number.parseInt(stored, 10) : 10000;
+    // Default to 5 cities if not set
+    return stored ? Number.parseInt(stored, 10) : 5;
   }
 
-  private saveMinPopulation(population: number): void {
-    localStorage.setItem(this.STORAGE_KEY, population.toString());
+  private saveCitiesCount(count: number): void {
+    localStorage.setItem(this.STORAGE_KEY, count.toString());
   }
 
   private getHighScoreKey(): string {
     return `${
       this.HIGH_SCORE_PREFIX
-    }-${this.difficulty()}-${this.minPopulation()}`;
+    }-${this.difficulty()}-${this.citiesToInclude()}`;
   }
 
   private loadHighScore(): void {
@@ -83,9 +90,12 @@ export class GameService {
     this.highScore.set(score);
   }
 
-  setMinPopulation(population: number): void {
-    this.minPopulation.set(population);
-    this.saveMinPopulation(population);
+  setCitiesCount(count: number): void {
+    // Clamp to valid range
+    const max = this.cities.length;
+    const clamped = Math.max(1, Math.min(count, max));
+    this.citiesToInclude.set(clamped);
+    this.saveCitiesCount(clamped);
     this.loadHighScore();
     this.usedCities.clear();
     this.streak.set(0);
@@ -100,10 +110,9 @@ export class GameService {
   }
 
   startNewRound(): void {
-    const eligibleCities = this.cities.filter(
-      (city) =>
-        city.population >= this.minPopulation() &&
-        !this.usedCities.has(city.name)
+    const topN = this.sortedCities.slice(0, this.citiesToInclude());
+    const eligibleCities = topN.filter(
+      (city) => !this.usedCities.has(city.name)
     );
 
     if (eligibleCities.length === 0) {
@@ -114,13 +123,7 @@ export class GameService {
       }
       // Otherwise just reset and start over
       this.usedCities.clear();
-      const allEligibleCities = this.cities.filter(
-        (city) => city.population >= this.minPopulation()
-      );
-      if (allEligibleCities.length === 0) {
-        console.error('No cities match the current population threshold');
-        return;
-      }
+      const allEligibleCities = topN;
       const randomIndex = Math.floor(Math.random() * allEligibleCities.length);
       this.currentCity.set(allEligibleCities[randomIndex]);
       this.gameState.set('playing');
@@ -170,8 +173,11 @@ export class GameService {
   }
 
   getCitiesCount(): number {
-    return this.cities.filter((city) => city.population >= this.minPopulation())
-      .length;
+    return this.citiesToInclude();
+  }
+
+  getTotalCityCount(): number {
+    return this.cities.length;
   }
 
   getAvailableCityNames(): string[] {

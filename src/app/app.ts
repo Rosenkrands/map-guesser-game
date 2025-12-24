@@ -82,8 +82,8 @@ export class App implements AfterViewInit {
     }
   }
 
-  onPopulationChange(population: number): void {
-    this.gameService.setMinPopulation(population);
+  onCitiesCountChange(count: number): void {
+    this.gameService.setCitiesCount(count);
   }
 
   onDifficultyChange(difficulty: Difficulty): void {

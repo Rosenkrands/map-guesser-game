@@ -42,9 +42,9 @@
     <p>{{ 'SETTINGS.CHOOSE_SETTINGS' | translate }}</p>
 
     <app-controls
-      [initialPopulation]="gameService.minPopulation()"
-      [citiesCountInput]="gameService.getCitiesCount()"
-      (populationChange)="onPopulationChange($event)"
+      [initialCitiesCount]="gameService.getCitiesCount()"
+      [maxCitiesInput]="gameService.getTotalCityCount()"
+      (citiesCountChange)="onCitiesCountChange($event)"
       (difficultyChange)="onDifficultyChange($event)"
     />
 

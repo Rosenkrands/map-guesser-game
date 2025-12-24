@@ -10,24 +10,23 @@ import { Difficulty } from '../../models/city.model';
   template: `
     <div class="controls">
       <div class="control-group">
-        <label for="population">
-          {{ 'CONTROLS.MIN_POPULATION' | translate }}: {{ minPopulation() }}
+        <label for="cities-count">
+          {{ 'CONTROLS.CITIES_COUNT' | translate }}: {{ selectedCitiesCount() }}
         </label>
         <p class="control-description">
-          {{ 'SETTINGS.POPULATION_EXPLANATION' | translate }}
+          {{ 'CONTROLS.CITIES_COUNT_DESCRIPTION' | translate }}
         </p>
         <input
           type="range"
-          id="population"
-          [value]="minPopulation()"
-          min="5000"
-          max="100000"
-          step="5000"
-          (input)="onPopulationChange($event)"
+          id="cities-count"
+          [value]="selectedCitiesCount()"
+          [min]="1"
+          [max]="maxCities()"
+          step="1"
+          (input)="onCitiesCountChange($event)"
         />
         <small
-          >{{ 'CONTROLS.CITIES_AVAILABLE' | translate }}:
-          {{ citiesCount() }}</small
+          >{{ 'CONTROLS.TOTAL_CITIES' | translate }}: {{ maxCities() }}</small
         >
       </div>
 
@@ -113,19 +112,19 @@ import { Difficulty } from '../../models/city.model';
   ],
 })
 export class ControlsComponent {
-  initialPopulation = input<number>(10000);
-  citiesCountInput = input<number>(0);
+  initialCitiesCount = input<number>(5);
+  maxCitiesInput = input<number>(0);
 
-  minPopulation = computed(() => this.initialPopulation());
+  selectedCitiesCount = computed(() => this.initialCitiesCount());
+  maxCities = computed(() => this.maxCitiesInput());
   difficulty: Difficulty = 'easy';
-  citiesCount = computed(() => this.citiesCountInput());
 
-  populationChange = output<number>();
+  citiesCountChange = output<number>();
   difficultyChange = output<Difficulty>();
 
-  onPopulationChange(event: Event): void {
+  onCitiesCountChange(event: Event): void {
     const value = Number.parseInt((event.target as HTMLInputElement).value);
-    this.populationChange.emit(value);
+    this.citiesCountChange.emit(value);
   }
 
   onDifficultyChange(event: Event): void {
