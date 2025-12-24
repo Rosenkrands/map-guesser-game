@@ -32,6 +32,9 @@
   },
   "GAME": {
     "CURRENT_STREAK": "Current Streak",
+    "CORRECT_SO_FAR": "Correct",
+    "ATTEMPTED": "Attempted",
+    "REMAINING": "Remaining",
     "HIGH_SCORE": "High Score",
     "ENTER_CITY": "Enter city name...",
     "SUBMIT_GUESS": "Submit Guess",

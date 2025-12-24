@@ -53,22 +53,9 @@ export class App implements AfterViewInit {
         this.gameService.endGame();
       }
 
-      // On wrong guess: show the overlay with the correct answer,
-      // then navigate to results after a short delay.
+      // On wrong guess: show the overlay with the correct answer.
       if (state === 'wrong' && this.gameService.screenState() !== 'finished') {
-        // Ensure UI is visible to show feedback
         this.uiHidden = false;
-        // Avoid multiple timers
-        if (this.wrongEndTimeout) {
-          clearTimeout(this.wrongEndTimeout);
-        }
-        this.wrongEndTimeout = window.setTimeout(() => {
-          this.gameService.endGame();
-          this.wrongEndTimeout = undefined;
-        }, 1500);
-      } else if (this.wrongEndTimeout && state !== 'wrong') {
-        clearTimeout(this.wrongEndTimeout);
-        this.wrongEndTimeout = undefined;
       }
 
       if (this.gameComponent) {

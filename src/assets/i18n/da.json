@@ -32,6 +32,9 @@
   },
   "GAME": {
     "CURRENT_STREAK": "Nuværende streak",
+    "CORRECT_SO_FAR": "Korrekte",
+    "ATTEMPTED": "Forsøg",
+    "REMAINING": "Tilbage",
     "HIGH_SCORE": "Højeste score",
     "ENTER_CITY": "Indtast bynavn...",
     "SUBMIT_GUESS": "Indsend gæt",

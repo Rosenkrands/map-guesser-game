@@ -116,18 +116,8 @@ export class GameService {
     );
 
     if (eligibleCities.length === 0) {
-      // Check if we completed all cities (have a streak going)
-      if (this.streak() > 0) {
-        this.gameState.set('completed');
-        return;
-      }
-      // Otherwise just reset and start over
-      this.usedCities.clear();
-      const allEligibleCities = topN;
-      const randomIndex = Math.floor(Math.random() * allEligibleCities.length);
-      this.currentCity.set(allEligibleCities[randomIndex]);
-      this.gameState.set('playing');
-      this.lastGuess.set('');
+      // Completed the run (attempted all selected cities)
+      this.gameState.set('completed');
       return;
     }
 
@@ -146,8 +136,10 @@ export class GameService {
 
     const isCorrect = normalizedGuess === normalizedAnswer;
 
+    // Mark current city as attempted regardless of correctness
+    this.usedCities.add(currentCityName);
+
     if (isCorrect) {
-      this.usedCities.add(currentCityName);
       this.streak.update((s) => s + 1);
       const newStreak = this.streak();
       if (newStreak > this.highScore()) {
@@ -180,6 +172,15 @@ export class GameService {
     return this.cities.length;
   }
 
+  getAttemptedCount(): number {
+    return this.usedCities.size;
+  }
+
+  getRemainingCount(): number {
+    const remaining = this.citiesToInclude() - this.usedCities.size;
+    return remaining > 0 ? remaining : 0;
+  }
+
   getAvailableCityNames(): string[] {
     return this.cities.map((city) => city.name).sort();
   }
@@ -204,13 +205,13 @@ export class GameService {
   }
 
   endGame(): void {
-    const currentStreak = this.streak();
+    const currentScore = this.streak();
     const currentHighScore = this.highScore();
-    this.finalScore.set(currentStreak);
-    this.isNewHighScore.set(currentStreak > currentHighScore);
+    this.finalScore.set(currentScore);
+    this.isNewHighScore.set(currentScore > currentHighScore);
 
-    if (currentStreak > currentHighScore) {
-      this.saveHighScore(currentStreak);
+    if (currentScore > currentHighScore) {
+      this.saveHighScore(currentScore);
     }
 
     this.screenState.set('finished');

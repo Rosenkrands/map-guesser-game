@@ -1,24 +1,31 @@
 import { Component, output, input, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   template: `
     <div class="game-panel">
       <div class="streak">
         <h2>
-          {{ 'GAME.CURRENT_STREAK' | translate }}: {{ streak }}@if (streak >= 2)
-          { 🔥 }
+          {{ 'GAME.CORRECT_SO_FAR' | translate }}:
+          {{
+            (attemptedCount() ? (streak / attemptedCount()) * 100 : 0)
+              | number : '1.0-0'
+          }}%
         </h2>
-        @if (highScore > 0) {
         <p class="high-score">
           {{ 'GAME.HIGH_SCORE' | translate }}: {{ highScore }}
         </p>
-        }
       </div>
+      <p class="progress">
+        {{ 'GAME.ATTEMPTED' | translate }}: {{ attemptedCount() }} /
+        {{ totalSelectedCities() }} · {{ 'GAME.REMAINING' | translate }}:
+        {{ remainingCount() }}
+      </p>
 
       <div class="guess-form">
         <input
@@ -62,6 +69,9 @@ import { TranslateModule } from '@ngx-translate/core';
           <strong>{{ correctAnswer }}</strong>
         </p>
         <p>{{ 'GAME.STREAK_RESET' | translate }}</p>
+        <button (click)="onNextCity()">
+          {{ 'GAME.NEXT_CITY' | translate }}
+        </button>
       </div>
       } @if (gameState === 'completed') {
       <div class="feedback celebration">
@@ -96,6 +106,11 @@ import { TranslateModule } from '@ngx-translate/core';
           font-size: 1rem;
           color: #666;
           font-weight: 600;
+        }
+        .progress {
+          margin: 0.25rem 0 0 0;
+          font-size: 0.95rem;
+          color: #555;
         }
       }
 
@@ -218,6 +233,9 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class GameComponent {
   availableCities = input.required<string[]>();
+  totalSelectedCities = input<number>(0);
+  attemptedCount = input<number>(0);
+  remainingCount = input<number>(0);
 
   guess = '';
   streak = 0;
