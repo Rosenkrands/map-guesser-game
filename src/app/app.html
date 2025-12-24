@@ -41,17 +41,6 @@
     <h1>{{ 'SETTINGS.TITLE' | translate }}</h1>
     <p>{{ 'SETTINGS.CHOOSE_SETTINGS' | translate }}</p>
 
-    <div class="settings-info">
-      <div class="info-box">
-        <strong>{{ 'CONTROLS.MIN_POPULATION' | translate }}</strong>
-        <p>{{ 'SETTINGS.POPULATION_EXPLANATION' | translate }}</p>
-      </div>
-      <div class="info-box">
-        <strong>{{ 'CONTROLS.DIFFICULTY' | translate }}</strong>
-        <p>{{ 'SETTINGS.DIFFICULTY_EXPLANATION' | translate }}</p>
-      </div>
-    </div>
-
     <app-controls
       [initialPopulation]="gameService.minPopulation()"
       [citiesCountInput]="gameService.getCitiesCount()"

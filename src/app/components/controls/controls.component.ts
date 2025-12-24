@@ -13,6 +13,9 @@ import { Difficulty } from '../../models/city.model';
         <label for="population">
           {{ 'CONTROLS.MIN_POPULATION' | translate }}: {{ minPopulation() }}
         </label>
+        <p class="control-description">
+          {{ 'SETTINGS.POPULATION_EXPLANATION' | translate }}
+        </p>
         <input
           type="range"
           id="population"
@@ -30,6 +33,9 @@ import { Difficulty } from '../../models/city.model';
 
       <div class="control-group">
         <label for="difficulty">{{ 'CONTROLS.DIFFICULTY' | translate }}:</label>
+        <p class="control-description">
+          {{ 'SETTINGS.DIFFICULTY_EXPLANATION' | translate }}
+        </p>
         <select
           id="difficulty"
           [value]="difficulty"
@@ -58,14 +64,17 @@ import { Difficulty } from '../../models/city.model';
         padding: 1.5rem;
         border-radius: 8px;
         margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
       }
 
       .control-group {
-        margin-bottom: 1rem;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
       }
 
       label {
@@ -73,6 +82,12 @@ import { Difficulty } from '../../models/city.model';
         font-weight: 600;
         margin-bottom: 0.5rem;
         color: #333;
+      }
+
+      .control-description {
+        margin: 0 0 0.5rem 0;
+        color: #555;
+        font-size: 0.95rem;
       }
 
       input[type='range'] {
