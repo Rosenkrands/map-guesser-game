@@ -30,9 +30,12 @@ import { TranslateModule } from '@ngx-translate/core';
       <div class="guess-form">
         <input
           type="text"
+          name="city"
           [(ngModel)]="guess"
           list="city-suggestions"
           [placeholder]="'GAME.ENTER_CITY' | translate"
+          (input)="onTextInput($event)"
+          (change)="onTextInput($event)"
           (keyup.enter)="onSubmit()"
           [disabled]="gameState !== 'playing'"
           autocomplete="off"
@@ -252,6 +255,11 @@ export class GameComponent {
     if (this.guess.trim()) {
       this.guessSubmitted.emit(this.guess.trim());
     }
+  }
+
+  onTextInput(event: Event): void {
+    // Ensure value updates when selecting from datalist on Android/Chrome
+    this.guess = (event.target as HTMLInputElement).value || '';
   }
 
   onNextCity(): void {
